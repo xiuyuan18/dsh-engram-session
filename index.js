@@ -252,7 +252,7 @@ export function apply(ctx, config) {
       ctx.logger.debug(`engram-session: agent ${agent.id} has no session cwd; skipping`)
       return
     }
-    const client = new Client({ name: 'dsh-engram-session', version: '0.4.0' })
+    const client = new Client({ name: 'dsh-engram-session', version: '0.4.1' })
     const transport = new StdioClientTransport({
       command: binary,
       args: config.args,

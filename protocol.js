@@ -8,6 +8,11 @@
  * project-resolution rules. The deployment persona is deliberately left
  * untouched — the protocol is this bundle's own contribution, registered by
  * the plugin, not a rewrite of the deployment's identity.
+ *
+ * The SEARCH SCOPING paragraph is bundle-local: it documents mem_search /
+ * mem_context scoping verified hands-on (default = current project only;
+ * all_projects=true crosses projects; scope=global filters machine-wide
+ * facts) — upstream MCP doc strings omit `global`, so this fills the gap.
  */
 
 export const MEMORY_PROTOCOL = `You have persistent memory tools registered as mcp__engram__mem_* (cross-session persistent
@@ -29,6 +34,12 @@ did we do", "how did we solve", references to past work), first call mcp__engram
 mcp__engram__mem_get_observation for full untruncated content. Also search proactively when
 starting work that might have been done before or when the user mentions a topic you have no
 context on.
+
+SEARCH SCOPING: mem_search and mem_context see only the current project by default. Pass
+all_projects=true to search across every project (e.g. machine-wide facts saved with
+scope=global), optionally combined with scope=global (global-only), scope=project
+(project-only), or scope=personal. Use this when the user asks about configuration or
+setup that may have been recorded under another project.
 
 SESSION CLOSE PROTOCOL (mandatory): before ending a session or saying "done", call
 mcp__engram__mem_session_summary with ## Goal, ## Instructions, ## Discoveries,
