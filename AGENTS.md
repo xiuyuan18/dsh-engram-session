@@ -92,6 +92,13 @@ node_modules/       Vendored by `pnpm install` — never commit, never edit
 - Registration is **scoped**: `agentCtx.tools.register(definition)` shadows the
   global tool layer for that agent only. Do not switch to global registration —
   that is the entire point of this plugin (per-session isolation).
+- `makeDefinition` pipes every MCP tool through `patchScopeDescriptions`,
+  which rewrites the `scope` parameter description of the four memory tools
+  (`mem_search`/`mem_context`/`mem_save`/`mem_update`) when it still matches
+  the known-stale upstream text (engram's shipped doc strings omit `global`).
+  Only description text changes — names, types, and required flags stay
+  untouched, so the DeepSeek function contract is preserved. A future
+  upstream fix is never clobbered (replacement is stale-text-exact).
 - `execute` calls `client.callTool({name, arguments}, undefined, {signal:
   exec.signal, timeout: config.toolCallTimeoutMs})`. Pass `undefined` as the
   result schema on purpose: the SDK's raw request path crashes on an undefined

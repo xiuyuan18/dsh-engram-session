@@ -38,6 +38,8 @@ One `engram mcp` stdio child per agent session, spawned with `cwd = session.head
 
 Rooting the child at the session workspace makes Engram's project auto-detection (git root / `.engram/config.json`) deterministic per session — the documented fix for hosts whose MCP child cannot inherit a reliable cwd (DSH web GUI, VS Code, WSL, CI). No `--project` pinning needed.
 
+The model-facing tool specs are locally corrected: engram's shipped `scope` parameter descriptions omit `global`, so the plugin rewrites them (description text only — names, types, and required flags are untouched) in the registered definitions, keeping the agent's tool contract accurate without waiting for an upstream release.
+
 ## Config
 
 | Field | Default | Description |

@@ -62,6 +62,52 @@ const INVALID_NAME_CHARS = /[^A-Za-z0-9_-]/g
 const HASH_LENGTH = 12
 
 /**
+ * Scope-parameter doc strings shipped by engram's MCP server omit `global`
+ * (verified in upstream internal/mcp/mcp.go: mem_search, mem_context,
+ * mem_save, mem_update). The model reads these descriptions from each tool's
+ * own spec (function parameters), so we rewrite the stale text locally
+ * instead of waiting for an upstream release — same self-healing philosophy
+ * as the binary resolution. A replacement only fires when the description
+ * still equals the known-stale string, so a future upstream fix is never
+ * overwritten.
+ */
+const SCOPE_DESCRIPTION_FIXES = new Map([
+  ['mem_search', {
+    stale: 'Filter by scope: project (default) or personal',
+    fixed: 'Filter by scope: project, personal, or global (omitted = no scope filter)',
+  }],
+  ['mem_context', {
+    stale: 'Filter observations by scope: project (default) or personal',
+    fixed: 'Filter observations by scope: project (default), personal, or global',
+  }],
+  ['mem_save', {
+    stale: 'Scope for this observation: project (default) or personal',
+    fixed: 'Scope for this observation: project (default), personal, or global',
+  }],
+  ['mem_update', {
+    stale: 'New scope: project or personal',
+    fixed: 'New scope: project, personal, or global',
+  }],
+])
+
+/**
+ * Clone the MCP tool's input schema with the stale scope description fixed in
+ * place. Returns the schema untouched (no clone) when the tool is not one of
+ * the four memory tools or its scope text already differs from the known
+ * stale string. Parameter names, types, and required flags are never touched
+ * — only description text, so the DeepSeek function contract is preserved.
+ */
+export function patchScopeDescriptions(rawName, inputSchema) {
+  const fix = SCOPE_DESCRIPTION_FIXES.get(rawName)
+  if (!fix) return inputSchema ?? {}
+  const description = inputSchema?.properties?.scope?.description
+  if (typeof description !== 'string' || description !== fix.stale) return inputSchema ?? {}
+  const schema = structuredClone(inputSchema)
+  schema.properties.scope.description = fix.fixed
+  return schema
+}
+
+/**
  * Resolve the Engram executable to spawn.
  *
  * Why: the historical default was a machine-specific absolute path
@@ -151,7 +197,7 @@ function makeDefinition(client, tool, config) {
   return {
     name: publicName,
     description: typeof tool.description === 'string' ? tool.description : '',
-    parameters: tool.inputSchema ?? {},
+    parameters: patchScopeDescriptions(tool.name, tool.inputSchema),
     output: {
       schema: {
         type: 'object',
@@ -252,7 +298,7 @@ export function apply(ctx, config) {
       ctx.logger.debug(`engram-session: agent ${agent.id} has no session cwd; skipping`)
       return
     }
-    const client = new Client({ name: 'dsh-engram-session', version: '0.4.1' })
+    const client = new Client({ name: 'dsh-engram-session', version: '0.4.2' })
     const transport = new StdioClientTransport({
       command: binary,
       args: config.args,
