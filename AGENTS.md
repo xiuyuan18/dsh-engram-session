@@ -182,6 +182,14 @@ dependency in its `package.json`.
   when editing the persona text, keep the key stable and keep the override
   additive in spirit (it must not break profiles that do not include this
   bundle — removing the bundle must leave no trace).
+- **`mem_save` needs a registered session**: passing a hand-made `session_id`
+  to `mcp__engram__mem_save` fails with `unknown_session` ("Session … was
+  provided but does not exist") — Engram sessions are lifecycle entities
+  created by `mcp__engram__mem_session_start` and closed by
+  `mem_session_end`. For ad-hoc saves omit `session_id`; the default
+  `manual-save-<project>` session is created automatically. The error hint
+  says it: "Start the session first, omit session_id, or retry with an
+  existing session_id."
 
 ## Project conventions
 

@@ -73,3 +73,4 @@ node --check index.js
 
 - No reconnect supervision: if the child dies mid-session, its tools fail until the session ends; restart the GUI to recover.
 - Text-only result projection: image/audio/embedded MCP blocks become diagnostics (Engram returns text results).
+- `mcp__engram__mem_save` rejects unregistered `session_id`s with `unknown_session`: sessions must be started via `mcp__engram__mem_session_start`, or omit `session_id` for ad-hoc saves (a default session is created automatically).
