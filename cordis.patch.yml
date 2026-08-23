@@ -13,6 +13,9 @@
       name: 'dsh-engram-session'
       config:
         serverName: engram
-        binary: /home/xiuyuaned/.local/bin/engram
+        # `binary` is deliberately NOT pinned here: the plugin auto-detects
+        # the Engram executable (PATH, then ~/.local/bin, /usr/local/bin,
+        # /opt/homebrew/bin). Pin it in the profile config only for exotic
+        # installs (e.g. config.binary: /custom/path/engram).
         args:
           - mcp

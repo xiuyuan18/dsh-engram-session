@@ -43,9 +43,22 @@ Rooting the child at the session workspace makes Engram's project auto-detection
 | Field | Default | Description |
 |---|---|---|
 | `serverName` | `engram` | Namespace for model-facing tool names |
-| `binary` | `/home/xiuyuaned/.local/bin/engram` | Engram executable |
+| `binary` | `(auto-detected)` | Engram executable; see [Binary resolution](#binary-resolution) |
 | `args` | `['mcp']` | Arguments for the MCP stdio server |
 | `toolCallTimeoutMs` | `60000` | Per `tools/call` timeout |
+
+### Binary resolution
+
+No machine-specific path is baked in. With `binary` unset, the plugin picks
+the first executable it finds: PATH lookup, then `~/.local/bin/engram`,
+`/usr/local/bin/engram`, `/opt/homebrew/bin/engram`. If nothing is found it
+logs a warning and mounts **without** memory tools — the protocol section is
+skipped too, so agents are never told about tools that cannot exist.
+
+Set `binary` in the profile config (an absolute path, or a bare command name)
+to override detection. A set-but-missing value logs a warning and falls back
+to detection, so profiles created by pre-0.4 bundles that pinned
+`/home/xiuyuaned/.local/bin/engram` self-heal on other machines.
 
 ## Lifecycle
 
@@ -56,7 +69,7 @@ Rooting the child at the session workspace makes Engram's project auto-detection
 ## Project layout
 
 - `index.js` — the plugin: per-agent Engram MCP child + scoped `mem_*` tool registration
-- `cordis.patch.yml` — the bundle composition layer (plugin row + Memory Protocol persona)
+- `cordis.patch.yml` — the bundle composition layer (plugin row)
 - `AGENTS.md` — guidance for AI agents working on this project
 - `package.json` / `pnpm-lock.yaml` — ESM manifest and lockfile
 
