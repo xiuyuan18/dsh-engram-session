@@ -1,0 +1,16 @@
+{
+  "name": "dsh-engram-session",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "dependencies": {
+    "@deepseek-ai/schemastery": "^3.18.0",
+    "@modelcontextprotocol/sdk": "^1.12.0"
+  }
+}

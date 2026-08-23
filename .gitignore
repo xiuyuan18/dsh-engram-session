@@ -1,0 +1,12 @@
+# Dependencies — vendored locally by `pnpm install`, never committed
+node_modules/
+
+# Logs
+*.log
+pnpm-debug.log*
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
