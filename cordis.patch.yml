@@ -62,8 +62,9 @@
       user to choose exactly one value from available_projects, then retry with BOTH
       project=<chosen value> and project_choice_reason=user_selected_after_ambiguous_project.
 
-      SESSION HANDLING: mcp__engram__mem_save rejects hand-made session_id values with
-      unknown_session — sessions are lifecycle entities created by mcp__engram__mem_session_start
-      and closed by mcp__engram__mem_session_end. For ad-hoc saves omit session_id (a default
-      session is created automatically); for a long-running session call
-      mcp__engram__mem_session_start once and reuse its session id.
+      SESSION HANDLING: mcp__engram__mem_save rejects session_id values that were never
+      created, with unknown_session. Sessions are lifecycle entities: create one with
+      mcp__engram__mem_session_start (parameters: id, directory), attach saves by passing
+      that same value as mem_save's session_id, and close it with mcp__engram__mem_session_end
+      (parameter: id). For ad-hoc saves omit session_id (a default session is created
+      automatically); for a long-running session start once with a chosen id and reuse it.
