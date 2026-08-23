@@ -61,3 +61,9 @@
       PROJECT HANDLING: if mcp__engram__mem_save returns ambiguous_project, do not guess — ask the
       user to choose exactly one value from available_projects, then retry with BOTH
       project=<chosen value> and project_choice_reason=user_selected_after_ambiguous_project.
+
+      SESSION HANDLING: mcp__engram__mem_save rejects hand-made session_id values with
+      unknown_session — sessions are lifecycle entities created by mcp__engram__mem_session_start
+      and closed by mcp__engram__mem_session_end. For ad-hoc saves omit session_id (a default
+      session is created automatically); for a long-running session call
+      mcp__engram__mem_session_start once and reuse its session id.

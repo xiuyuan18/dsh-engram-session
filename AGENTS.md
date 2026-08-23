@@ -109,8 +109,9 @@ node_modules/       Vendored by `pnpm install` — never commit, never edit
 - **Persona override** (`system-prompt` → `config.persona`): restates the
   persona key owned by the base/web-app layers with the Engram Memory Protocol
   (when-to-save, when-to-search, session-close protocol, passive capture,
-  after-compaction recovery, ambiguous-project handling). It deliberately uses
-  DSH's `mcp__engram__mem_*` tool names and DSH project-resolution rules.
+  after-compaction recovery, session handling, ambiguous-project handling). It
+  deliberately uses DSH's `mcp__engram__mem_*` tool names and DSH
+  project-resolution rules.
 - If you change the protocol text, keep it consistent with upstream
   Gentleman-Programming/engram docs, keep the DSH tool-name adaptation, and
   keep the persona key (`system-prompt`) as-is so the layer stack still
