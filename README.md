@@ -57,12 +57,12 @@ Rooting the child at the session workspace makes Engram's project auto-detection
 
 - `index.js` — the plugin: per-agent Engram MCP child + scoped `mem_*` tool registration
 - `cordis.patch.yml` — the bundle composition layer (plugin row + Memory Protocol persona)
-- `agents.md` — guidance for AI agents working on this project
+- `AGENTS.md` — guidance for AI agents working on this project
 - `package.json` / `pnpm-lock.yaml` — ESM manifest and lockfile
 
 ## Development
 
-See [`agents.md`](./agents.md) for architecture details, conventions,
+See [`AGENTS.md`](./AGENTS.md) for architecture details, conventions,
 verification steps, and pitfalls. Quick checks:
 
 ```sh

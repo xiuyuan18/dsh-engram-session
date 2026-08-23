@@ -1,4 +1,4 @@
-# agents.md — dsh-engram-session
+# AGENTS.md — dsh-engram-session
 
 Guidance for AI agents (and humans) working on this project. Read this before
 modifying code, the bundle composition, or this project's docs.
@@ -44,7 +44,7 @@ cordis.patch.yml    The bundle layer: plugin row + Memory Protocol persona overr
 package.json        ESM package manifest; dsh.bundle.patch points at the patch
 pnpm-lock.yaml      Lockfile — commit it; installs are reproducible
 README.md           User-facing install/usage docs
-agents.md           This file
+AGENTS.md           This file
 node_modules/       Vendored by `pnpm install` — never commit, never edit
 ```
 
@@ -148,7 +148,7 @@ dependency in its `package.json`.
 3. `node --check index.js` for syntax.
 4. Reinstall the bundle into the profile (`dsh plugin --profile web add ...`)
    or just restart the profile's app, then verify manually (see below).
-5. Update `README.md` (user-facing) and/or `agents.md` (agent-facing) if
+5. Update `README.md` (user-facing) and/or `AGENTS.md` (agent-facing) if
    behavior, config, or commands changed.
 
 ## Manual verification checklist
@@ -173,9 +173,6 @@ dependency in its `package.json`.
   duplicate-disposer safety.
 - **Text-only projection**: image/audio/embedded MCP blocks become diagnostics
   (Engram returns text results today, so this is fine).
-- **Version drift**: `package.json` says `0.2.0` but the MCP `Client` in
-  `index.js` reports `version: '0.1.0'` — keep them in sync next time the
-  version bumps.
 - **Absolute binary path** appears in both `Config.binary` default and
   `cordis.patch.yml`; they must stay consistent, and neither is portable across
   machines.
