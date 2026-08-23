@@ -2,14 +2,14 @@
 
 Per-session [Engram](https://github.com/Gentleman-Programming/engram) memory for DeepSeek Harness — a standalone bundle project reusable across profiles and presets.
 
-This package is a **bundle**: its `dsh.bundle.patch` (`cordis.patch.yml`) is the composition layer that inserts the plugin row and the Memory Protocol persona override, so installing it into any profile is one command:
+This package is a **bundle**: its `dsh.bundle.patch` (`cordis.patch.yml`) is the composition layer that inserts the plugin row; the plugin then registers the Engram Memory Protocol as its own system-prompt section (`engram:memory-protocol`, order 10) at load — the deployment persona is never touched. Installing it into any profile is one command:
 
 ```sh
 # from anywhere; <path> may be absolute or relative to your invoking directory
 dsh plugin --profile web add /home/xiuyuaned/dsh-plugins/dsh-engram-session
 ```
 
-`dsh plugin` runs `pnpm add` and reconciles `dsh.profile.bundles` — a `dsh.bundle`-declaring package joins the layer stack automatically. The bundle owns everything (plugin row + persona override), so removing or disabling it leaves zero side effects (no tools, no orphaned memory instructions).
+`dsh plugin` runs `pnpm add` and reconciles `dsh.profile.bundles` — a `dsh.bundle`-declaring package joins the layer stack automatically. The bundle owns everything (plugin row + protocol section), so removing or disabling it leaves zero side effects (no tools, no orphaned memory instructions).
 
 ## Setup for a new profile or preset
 

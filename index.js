@@ -14,6 +14,11 @@
  *
  * Known limitation: no reconnect supervision. If the child dies mid-session,
  * its tools fail until the session ends; restart the GUI to recover.
+ *
+ * The Engram Memory Protocol is injected as its own system-prompt section
+ * (`engram:memory-protocol`, order 10) via `ctx.systemPrompt.section()`,
+ * never as a persona override — the deployment persona stays user-owned and
+ * other system-prompt patchers cannot drop the protocol by replacing the row.
  */
 
 import { createHash } from 'node:crypto'
@@ -21,9 +26,10 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js'
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js'
 import { ListToolsResultSchema } from '@modelcontextprotocol/sdk/types.js'
 import Schema from '@deepseek-ai/schemastery'
+import { MEMORY_PROTOCOL } from './protocol.js'
 
 export const name = 'engram-session'
-export const inject = ["agents"]
+export const inject = ['agents', 'systemPrompt']
 
 export const Config = Schema.object({
   /** Namespace for model-facing tool names (`mcp__<serverName>__<rawName>`). */
@@ -142,6 +148,17 @@ async function syncTools(client, agentCtx, disposers, config) {
 }
 
 export async function apply(ctx, config) {
+  // The Memory Protocol rides as its own system-prompt section (after the
+  // deployment persona at order 0, before tool guidance at 100+), not as a
+  // persona override: the deployment persona stays fully user-owned, and
+  // other system-prompt patchers replacing the row cannot drop the protocol.
+  // The effect is context-owned, so plugin disposal unregisters it.
+  ctx.systemPrompt.section({
+    name: 'engram:memory-protocol',
+    order: 10,
+    text: MEMORY_PROTOCOL,
+  })
+
   /** agent id -> live server entry. */
   const servers = new Map()
 
@@ -160,7 +177,7 @@ export async function apply(ctx, config) {
       ctx.logger.debug(`engram-session: agent ${agent.id} has no session cwd; skipping`)
       return
     }
-    const client = new Client({ name: 'dsh-engram-session', version: '0.2.0' })
+    const client = new Client({ name: 'dsh-engram-session', version: '0.3.0' })
     const transport = new StdioClientTransport({
       command: config.binary,
       args: config.args,
