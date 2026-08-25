@@ -1,5 +1,7 @@
 # dsh-engram-session
 
+> **⚠️ Unofficial project.** This is an independent, community-made plugin. It is **not** an official DeepSeek Harness product, is not affiliated with or endorsed by DeepSeek, and is not maintained by the DeepSeek Harness team. Use at your own risk.
+
 Per-session [Engram](https://github.com/Gentleman-Programming/engram) memory for DeepSeek Harness — a standalone bundle project reusable across profiles and presets.
 
 This package is a **bundle**: its `dsh.bundle.patch` (`cordis.patch.yml`) is the composition layer that inserts the plugin row; the plugin then registers the Engram Memory Protocol as its own system-prompt section (`engram:memory-protocol`, order 10) at load — the deployment persona is never touched. Installing it into any profile is one command:
